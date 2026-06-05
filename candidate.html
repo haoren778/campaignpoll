@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vote Now - CampaignPoll</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 id="campaignTitle">CampaignPoll</h1>
+    </header>
+
+    <main>
+      <div id="candidatesList"></div>
+      <div id="message"></div>
+    </main>
+  </div>
+
+  <script>
+    // 从 URL 获取 campaign ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const campaignId = urlParams.get('id');
+
+    if (!campaignId) {
+      document.getElementById('message').innerHTML = '<p style="color:red;">Invalid link.';
+    } else {
+      // 模拟加载候选人
+      loadCandidates();
+    }
+
+    async function loadCandidates() {
+      try {
+        const response = await fetch(`/api/register.js?campaign=${campaignId}`);
+        const data = await response.json();
+        
+        if (!data || !data.candidates) {
+          document.getElementById('message').innerHTML = '<p style="color:red;">Campaign not found.';
+          return;
+        }
+
+        const candidatesDiv = document.getElementById('candidatesList');
+        candidatesDiv.innerHTML = '<h2>Vote for your favorite candidate</h2>';
+
+        data.candidates.forEach((candidate, index) => {
+          const div = document.createElement('div');
+          div.className = 'candidate';
+          div.innerHTML = `
+            <input type="checkbox" id="cand${index}" name="candidate" value="${candidate}">
+            <label for="cand${index}">${candidate}</label>
+          `;
+          candidatesDiv.appendChild(div);
+        });
+
+        const voteBtn = document.createElement('button');
+        voteBtn.textContent = 'Submit Vote';
+        voteBtn.onclick = submitVote;
+        candidatesDiv.appendChild(voteBtn);
+
+      } catch (error) {
+        document.getElementById('message').innerHTML = '<p style="color:red;">Error loading campaign.';
+      }
+    }
+
+    async function submitVote() {
+      const selected = Array.from(document.querySelectorAll('input[name="candidate"]:checked')).map(cb => cb.value);
+      
+      if (selected.length === 0) {
+        alert('Please select at least one candidate.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/vote.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ campaignId, votes: selected })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          alert('✅ Thank you for voting!');
+        } else {
+          alert('❌ ' + result.message);
+        }
+      } catch (error) {
+        alert('❌ Error submitting vote.');
+      }
+    }
+  </script>
+</body>
+</html>
