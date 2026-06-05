@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Campaign - CampaignPoll</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🗳️ Register Your Campaign</h1>
+    </header>
+
+    <main>
+      <form id="campaignForm">
+        <label for="campaignName">Campaign Name:</label>
+        <input type="text" id="campaignName" required />
+
+        <label for="candidateNames">Candidates (comma separated):</label>
+        <input type="text" id="candidateNames" placeholder="e.g. Alice, Bob, Charlie" required />
+
+        <button type="submit">Create Campaign</button>
+      </form>
+
+      <div id="result" style="display:none;">
+        <h3>✅ Campaign Created!</h3>
+        Share this link with your friends:
+        <input type="text" id="shareLink" readonly />
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
