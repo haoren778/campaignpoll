@@ -1,93 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vote Now - CampaignPoll</title>
-  <link rel="stylesheet" href="CSS/style.css" />
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1 id="campaignTitle">CampaignPoll</h1>
-    </header>
+<script>
+  // 从 URL 读取数据
+  const urlParams = new URLSearchParams(window.location.search);
+  const encodedData = urlParams.get('data');
 
-    <main>
-      <div id="candidatesList"></div>
-      <div id="message"></div>
-    </main>
-  </div>
+  if (!encodedData) {
+    document.getElementById('message').innerHTML = '<p style="color:red;">Invalid or expired link.</p>';
+  } else {
+    try {
+      // 解码数据
+      const jsonString = decodeURIComponent(atob(encodedData));
+      const campaignData = JSON.parse(jsonString);
 
-  <script>
-    // 从 URL 获取 campaign ID
-    const urlParams = new URLSearchParams(window.location.search);
-    const campaignId = urlParams.get('id');
+      // 显示竞选标题
+      document.getElementById('campaignTitle').innerText = campaignData.name;
 
-    if (!campaignId) {
-      document.getElementById('message').innerHTML = '<p style="color:red;">Invalid link.';
-    } else {
-      // 模拟加载候选人
-      loadCandidates();
+      const candidatesDiv = document.getElementById('candidatesList');
+      candidatesDiv.innerHTML = '<h2>Select your candidate(s)</h2>';
+
+      campaignData.candidates.forEach((candidate, index) => {
+        const div = document.createElement('div');
+        div.className = 'candidate';
+        div.innerHTML = `
+          <input type="checkbox" id="cand${index}" value="${candidate}">
+          <label for="cand${index}">${candidate}</label>
+        `;
+        candidatesDiv.appendChild(div);
+      });
+
+      const voteBtn = document.createElement('button');
+      voteBtn.textContent = 'Submit Vote';
+      voteBtn.onclick = submitVote;
+      candidatesDiv.appendChild(voteBtn);
+
+    } catch (e) {
+      document.getElementById('message').innerHTML = '<p style="color:red;">Failed to load campaign.</p>';
+    }
+  }
+
+  // 投票逻辑（暂时存在浏览器里，刷新会重置，后续接数据库）
+  function submitVote() {
+    const selected = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+      .map(cb => cb.value);
+
+    if (selected.length === 0) {
+      alert('Please select at least one candidate.');
+      return;
     }
 
-    async function loadCandidates() {
-      try {
-        const response = await fetch(`/api/register.js?campaign=${campaignId}`);
-        const data = await response.json();
-        
-        if (!data || !data.candidates) {
-          document.getElementById('message').innerHTML = '<p style="color:red;">Campaign not found.';
-          return;
-        }
+    // 这里暂时只是模拟成功
+    // 后面我们会把这里改成真实的 API 调用 (Part D)
+    alert('✅ Thank you for voting!\n\nSelected:\n' + selected.join('\n'));
+  }
+</script>
 
-        const candidatesDiv = document.getElementById('candidatesList');
-        candidatesDiv.innerHTML = '<h2>Vote for your favorite candidate</h2>';
-
-        data.candidates.forEach((candidate, index) => {
-          const div = document.createElement('div');
-          div.className = 'candidate';
-          div.innerHTML = `
-            <input type="checkbox" id="cand${index}" name="candidate" value="${candidate}">
-            <label for="cand${index}">${candidate}</label>
-          `;
-          candidatesDiv.appendChild(div);
-        });
-
-        const voteBtn = document.createElement('button');
-        voteBtn.textContent = 'Submit Vote';
-        voteBtn.onclick = submitVote;
-        candidatesDiv.appendChild(voteBtn);
-
-      } catch (error) {
-        document.getElementById('message').innerHTML = '<p style="color:red;">Error loading campaign.';
-      }
-    }
-
-    async function submitVote() {
-      const selected = Array.from(document.querySelectorAll('input[name="candidate"]:checked')).map(cb => cb.value);
-      
-      if (selected.length === 0) {
-        alert('Please select at least one candidate.');
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/vote.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ campaignId, votes: selected })
-        });
-
-        const result = await response.json();
-        if (result.success) {
-          alert('✅ Thank you for voting!');
-        } else {
-          alert('❌ ' + result.message);
-        }
-      } catch (error) {
-        alert('❌ Error submitting vote.');
-      }
-    }
-  </script>
-</body>
-</html>
