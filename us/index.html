@@ -1,1 +1,45 @@
-<h1>United States Campaigns</h1>
+.top-nav {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+.nav-container {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  min-width: 180px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  color: #334155;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background: #f8fafc;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
