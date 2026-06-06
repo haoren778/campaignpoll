@@ -1,3 +1,6 @@
+/* Modern Minimalist Style */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,148 +8,212 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc; /* Soft gray background */
+  color: #1e293b; /* Dark slate text */
+  -webkit-font-smoothing: antialiased;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 60px 20px;
 }
 
+/* Header */
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 48px;
 }
 
 header h1 {
-  color: #2c3e50;
-  font-size: 2.5em;
-  margin-bottom: 10px;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  color: #020617;
 }
 
+header p {
+  margin-top: 12px;
+  font-size: 17px;
+  color: #64748b;
+}
+
+/* Hero Section */
 .hero {
   background: white;
-  padding: 30px;
-  border-radius: 8px;
+  border-radius: 20px;
+  padding: 48px;
   text-align: center;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid #f1f5f9;
+  margin-bottom: 40px;
 }
 
 .hero h2 {
-  margin-bottom: 15px;
-  color: #3498db;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
+.hero p {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+/* Buttons */
 .btn-primary {
-  background: #3498db;
-  color: white;
-  padding: 12px 24px;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: bold;
   display: inline-block;
-  margin-top: 10px;
+  background: #020617; /* Black */
+  color: white;
+  padding: 16px 32px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: #2980b9;
+  transform: scale(1.03);
+  background: #1e293b;
 }
 
+/* Features Grid */
 .features {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
 }
 
 .feature {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  flex: 1;
-  min-width: 250px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
 }
 
 .feature h3 {
-  color: #3498db;
-  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #020617;
 }
 
-footer {
-  text-align: center;
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
-  color: #666;
+.feature p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
 }
 
+/* Forms */
 form {
   background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2.5px 10px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid #f1f5f9;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #334155;
 }
 
 input[type="text"] {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
-  background: #3498db;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
   font-size: 16px;
+  margin-bottom: 24px;
+  transition: border-color 0.2s;
 }
 
-button:hover {
-  background: #2980b9;
+input[type="text"]:focus {
+  outline: none;
+  border-color: #020617;
 }
 
-#result {
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
+/* Candidate List */
 .candidate {
   background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 4px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 12px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
+  border: 1px solid #f1f5f9;
+  transition: border-color 0.2s;
+}
+
+.candidate:hover {
+  border-color: #cbd5e1;
 }
 
 .candidate input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  accent-color: #020617;
 }
 
 .candidate label {
-  margin: 0;
   font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Sponsor Button */
+.btn-sponsor {
+  background: #facc15; /* Yellow */
+  color: #422006;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.2s;
+}
+
+.btn-sponsor:hover {
+  background: #fde047;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* Result Box */
+#result {
+  background: #f0fdf4; /* Light green */
+  border: 1px solid #bbf7d0;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#shareLink {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #bbf7d0;
+  background: white;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
 }
