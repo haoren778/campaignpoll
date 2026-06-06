@@ -28,3 +28,36 @@ function copyLink() {
   document.execCommand('copy');
   alert('✅ Link copied! Send it to your friends.');
 }
+// 设置默认语言
+const defaultLang = 'en';
+
+function switchLang(select) {
+  const lang = select.value;
+  localStorage.setItem('siteLang', lang);
+  applyLang(lang);
+}
+
+function applyLang(lang) {
+  // 示例：切换页面文字（你以后可以扩展）
+  const texts = {
+    en: { start: 'Start My Campaign', vote: 'Submit Vote' },
+    fr: { start: 'Lancer ma campagne', vote: 'Soumettre le vote' },
+    de: { start: 'Kampagne starten', vote: 'Abstimmen' },
+    es: { start: 'Iniciar campaña', vote: 'Enviar voto' }
+  };
+
+  const t = texts[lang] || texts[lang.split('-')[0]] || texts['en'];
+
+  document.querySelectorAll('.btn-primary').forEach(btn => {
+    if (btn.textContent.includes('Start')) btn.textContent = t.start;
+  });
+}
+
+// 页面加载时恢复语言
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('siteLang') || defaultLang;
+  document.getElementById('langSelect').value = savedLang;
+  const footer = document.getElementById('langSelectFooter');
+  if (footer) footer.value = savedLang;
+  applyLang(savedLang);
+});
