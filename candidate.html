@@ -1,60 +1,55 @@
 
-<script>
-(function () {
-  var urlParams = new URLSearchParams(window.location.search);
-  var encodedData = urlParams.get('data');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vote - CampaignPoll</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 id="campaignTitle">CampaignPoll</h1>
+    </header>
+    <main>
+      <div id="candidatesList"></div>
+      <div id="message"></div>
+    </main>
+  </div>
 
-  if (!encodedData) {
-    document.getElementById('message').innerHTML = '<p style="color:red;">Invalid link.</p>';
-    return;
-  }
-
-  try {
-    // Decode Base64
-    var jsonString = decodeURIComponent(atob(encodedData));
-    var campaignData = JSON.parse(jsonString);
-
-    // Set title
-    document.getElementById('campaignTitle').innerText = campaignData.name || 'CampaignPoll';
-
-    var container = document.getElementById('candidatesList');
-    container.innerHTML = '<h2>Select your candidate(s)</h2>';
-
-    campaignData.candidates.forEach(function (name, index) {
-      var div = document.createElement('div');
-      div.className = 'candidate';
-
-      var id = 'cand' + index;
-      div.innerHTML =
-        '<input type="checkbox" id="' + id + '" value="' + name + '">' +
-        '<label for="' + id + '">' + name + '</label>';
-
-      container.appendChild(div);
-    });
-
-    var btn = document.createElement('button');
-    btn.innerText = 'Submit Vote';
-    btn.onclick = submitVote;
-    container.appendChild(btn);
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById('message').innerHTML = '<p style="color:red;">Failed to load campaign.</p>';
-  }
-
-  function submitVote() {
-    var checked = document.querySelectorAll('input[type="checkbox"]:checked');
-    if (checked.length === 0) {
-      alert('Please select at least one candidate.');
+  <script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var data = params.get('data');
+    if (!data) {
+      document.getElementById('message').innerHTML = '<p style="color:red;">Invalid link.</p>';
       return;
     }
-
-    var names = [];
-    checked.forEach(function (cb) {
-      names.push(cb.value);
-    });
-
-    alert('✅ Thank you for voting!\n\nYour choices:\n' + names.join('\n'));
-  }
-})();
-</script>
+    try {
+      var obj = JSON.parse(decodeURIComponent(atob(data)));
+      document.getElementById('campaignTitle').innerText = obj.name || 'CampaignPoll';
+      var box = document.getElementById('candidatesList');
+      box.innerHTML = '<h2>Select your candidate(s)</h2>';
+      obj.candidates.forEach(function (n, i) {
+        var id = 'c' + i;
+        box.innerHTML += '<div class="candidate"><input type="checkbox" id="' + id + '" value="' + n + '"><label for="' + id + '"> ' + n + '</label></div>';
+      });
+      var btn = document.createElement('button');
+      btn.innerText = 'Submit Vote';
+      btn.onclick = function () {
+        var chk = document.querySelectorAll('input[type="checkbox"]:checked');
+        if (!chk.length) { alert('Please select at least one.'); return; }
+        var v = [];
+        chk.forEach(function (c) { v.push(c.value); });
+        alert('✅ Voted!\n' + v.join('\n'));
+      };
+      box.appendChild(btn);
+    } catch (e) {
+      document.getElementById('message').innerHTML = '<p style="color:red;">Link broken.</p>';
+      console.error(e);
+    }
+  })();
+  </script>
+</body>
+</html>
